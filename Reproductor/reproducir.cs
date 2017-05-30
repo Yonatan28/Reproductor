@@ -12,18 +12,6 @@ namespace Reproductor
         string url;
         string nombre;
 
-        public string Url
-        {
-            get
-            {
-                return url;
-            }
-
-            set
-            {
-                url = value;
-            }
-        }
 
         public string Nombre
         {
@@ -35,6 +23,19 @@ namespace Reproductor
             set
             {
                 nombre = value;
+            }
+        }
+
+        public string Url
+        {
+            get
+            {
+                return url;
+            }
+
+            set
+            {
+                url = value;
             }
         }
     }

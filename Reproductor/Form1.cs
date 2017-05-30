@@ -56,7 +56,7 @@ namespace Reproductor
         private void button2_Click(object sender, EventArgs e)
         {
             //this.Hide(); //cerrar formulario actual
-
+            this.Hide();
             listarepro frm = new listarepro();
 
             frm.Show();
