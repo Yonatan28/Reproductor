@@ -10,12 +10,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Reflection;
+using System.Xml;
 
 
 namespace Reproductor
 {
     public partial class Form1 : Form
     {
+        List<reproducir> listareproduci = new List<reproducir>();
         public Form1()
         {
             InitializeComponent();
@@ -61,5 +63,32 @@ namespace Reproductor
 
             frm.Show();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Media.Ctlcontrols.stop();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            Media.Ctlcontrols.pause();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+           
+
+        }
+      
     }
 }

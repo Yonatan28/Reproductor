@@ -9,16 +9,18 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Reflection;
+using System.Xml;
 
 namespace Reproductor
 {
     public partial class listarepro : Form
     {
         Form1 frm = new Form1();
-        
+      
         List<reproducir> listareproduci = new List<reproducir>();
         public listarepro()
         {
+
             InitializeComponent();
         }
 
@@ -32,7 +34,37 @@ namespace Reproductor
             cargar();
 
         }
+        public void xml()
+        {
+            XmlDocument doc = new XmlDocument();
+            XmlElement raiz = doc.CreateElement("Lista_Favoritos");
+            doc.AppendChild(raiz);
 
+            XmlElement cancion = doc.CreateElement("Cancion");
+            raiz.AppendChild(cancion);
+
+            XmlElement titulo = doc.CreateElement("Titulo");
+            titulo.AppendChild(doc.CreateTextNode("Lalala"));
+            cancion.AppendChild(titulo);
+
+            XmlElement url = doc.CreateElement("Url");
+            url.AppendChild(doc.CreateTextNode("asdf"));
+            cancion.AppendChild(url);
+            //nuevo documento
+            cancion = doc.CreateElement("Cancion");
+            raiz.AppendChild(cancion);
+
+            titulo = doc.CreateElement("Titulo");
+            titulo.AppendChild(doc.CreateTextNode("noma"));
+            cancion.AppendChild(titulo);
+
+            url = doc.CreateElement("Url");
+            url.AppendChild(doc.CreateTextNode("aaaa"));
+            cancion.AppendChild(url);
+
+            doc.Save(@"miXML.xml");
+        }
+     
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -47,11 +79,13 @@ namespace Reproductor
         }
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            frm.Hide();
-            frm.label1.Text = " ";
-            frm.label1.Text = dataGridView1.CurrentRow.Cells["nombre"].Value.ToString();
-            frm.Media.URL= dataGridView1.CurrentRow.Cells["url"].Value.ToString();
-            frm.Show();
+            string nom = dataGridView1.CurrentRow.Cells["nombre"].Value.ToString();
+            label1.Text = nom;
+          
+
+        }
+        public void limn(int c)
+        {
 
         }
 
@@ -79,15 +113,11 @@ namespace Reproductor
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-           string nom = dataGridView1.CurrentRow.Cells["nombre"].Value.ToString();
-            for (int i = 0; i < listareproduci.Count; i++)
-            {
-                if (nom == listareproduci[i].Nombre)
-                {
-                    listareproduci.RemoveAt(i);
-                }
-            }
-            cargar();
+            frm.Hide();
+            frm.label1.Text = " ";
+            frm.label1.Text = dataGridView1.CurrentRow.Cells["nombre"].Value.ToString();
+            frm.Media.URL = dataGridView1.CurrentRow.Cells["url"].Value.ToString();
+            frm.Show();
 
         }
 
@@ -97,6 +127,20 @@ namespace Reproductor
             int inicio = 0;
             listareproduci.RemoveRange(inicio,contar);
             cargar();
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            string nomb = label1.Text;
+            for (int i = 0; i < listareproduci.Count; i++)
+            {
+                if (nomb == listareproduci[i].Nombre)
+                {
+                    listareproduci.RemoveAt(i);
+                }
+            }
+            cargar();
+            
         }
     }
 }
