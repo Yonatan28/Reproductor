@@ -32,7 +32,7 @@ namespace Reproductor
             reprotemp.Nombre =openFileDialog1.SafeFileName.ToString();
             listareproduci.Add(reprotemp);
             cargar();
-
+            xml();
         }
         public void xml()
         {
@@ -41,28 +41,31 @@ namespace Reproductor
             doc.AppendChild(raiz);
 
             XmlElement cancion = doc.CreateElement("Cancion");
-            raiz.AppendChild(cancion);
+            
 
             XmlElement titulo = doc.CreateElement("Titulo");
-            titulo.AppendChild(doc.CreateTextNode("Lalala"));
-            cancion.AppendChild(titulo);
+          
 
             XmlElement url = doc.CreateElement("Url");
-            url.AppendChild(doc.CreateTextNode("asdf"));
-            cancion.AppendChild(url);
-            //nuevo documento
-            cancion = doc.CreateElement("Cancion");
-            raiz.AppendChild(cancion);
+          
+            for (int i = 0; i < listareproduci.Count(); i++)
+            {
+                //nuevo documento
+                cancion = doc.CreateElement("Cancion");
+                raiz.AppendChild(cancion);
 
-            titulo = doc.CreateElement("Titulo");
-            titulo.AppendChild(doc.CreateTextNode("noma"));
-            cancion.AppendChild(titulo);
+                titulo = doc.CreateElement("Titulo");
+                titulo.AppendChild(doc.CreateTextNode(listareproduci[i].Nombre));
+                cancion.AppendChild(titulo);
 
-            url = doc.CreateElement("Url");
-            url.AppendChild(doc.CreateTextNode("aaaa"));
-            cancion.AppendChild(url);
+                url = doc.CreateElement("Url");
+                url.AppendChild(doc.CreateTextNode(listareproduci[i].Url));
+                cancion.AppendChild(url);
 
-            doc.Save(@"miXML.xml");
+                doc.Save(@"miXML.xml");
+            }
+ 
+
         }
      
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -117,6 +120,7 @@ namespace Reproductor
             frm.label1.Text = " ";
             frm.label1.Text = dataGridView1.CurrentRow.Cells["nombre"].Value.ToString();
             frm.Media.URL = dataGridView1.CurrentRow.Cells["url"].Value.ToString();
+            frm.button8.Enabled = true;
             frm.Show();
 
         }
