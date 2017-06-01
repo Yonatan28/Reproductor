@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.Media = new AxWMPLib.AxWindowsMediaPlayer();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -50,6 +51,8 @@
             this.button8 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label2 = new System.Windows.Forms.Label();
+            this.macTrackBar1 = new XComponent.SliderBar.MACTrackBar();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.Media)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -71,7 +74,7 @@
             this.opcionesToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(583, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(832, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -153,7 +156,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(45, 276);
+            this.label1.Location = new System.Drawing.Point(45, 38);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(111, 13);
             this.label1.TabIndex = 4;
@@ -171,7 +174,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(269, 281);
+            this.button4.Location = new System.Drawing.Point(269, 310);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 6;
@@ -190,7 +193,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(308, 339);
+            this.button6.Location = new System.Drawing.Point(269, 339);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(75, 23);
             this.button6.TabIndex = 8;
@@ -222,9 +225,10 @@
             // 
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(371, 43);
+            this.dataGridView1.Location = new System.Drawing.Point(48, 237);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(196, 246);
+            this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.dataGridView1.Size = new System.Drawing.Size(772, 52);
             this.dataGridView1.TabIndex = 11;
             // 
             // label2
@@ -236,11 +240,44 @@
             this.label2.TabIndex = 12;
             this.label2.Text = "Canciones agregadas a lista";
             // 
+            // macTrackBar1
+            // 
+            this.macTrackBar1.BackColor = System.Drawing.Color.Transparent;
+            this.macTrackBar1.BorderColor = System.Drawing.SystemColors.ActiveBorder;
+            this.macTrackBar1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.macTrackBar1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.macTrackBar1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(125)))), ((int)(((byte)(123)))));
+            this.macTrackBar1.IndentHeight = 6;
+            this.macTrackBar1.Location = new System.Drawing.Point(374, 91);
+            this.macTrackBar1.Maximum = 100;
+            this.macTrackBar1.Minimum = 0;
+            this.macTrackBar1.Name = "macTrackBar1";
+            this.macTrackBar1.Size = new System.Drawing.Size(259, 28);
+            this.macTrackBar1.TabIndex = 7;
+            this.macTrackBar1.TextTickStyle = System.Windows.Forms.TickStyle.None;
+            this.macTrackBar1.TickColor = System.Drawing.Color.Transparent;
+            this.macTrackBar1.TickHeight = 4;
+            this.macTrackBar1.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.macTrackBar1.TrackerColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(130)))), ((int)(((byte)(198)))));
+            this.macTrackBar1.TrackerSize = new System.Drawing.Size(16, 16);
+            this.macTrackBar1.TrackLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(93)))), ((int)(((byte)(90)))));
+            this.macTrackBar1.TrackLineHeight = 3;
+            this.macTrackBar1.TrackLineSelectedColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(93)))), ((int)(((byte)(90)))));
+            this.macTrackBar1.Value = 0;
+            this.macTrackBar1.ValueChanged += new XComponent.SliderBar.ValueChangedHandler(this.macTrackBar1_ValueChanged);
+            // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 1;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(583, 437);
+            this.ClientSize = new System.Drawing.Size(832, 437);
+            this.Controls.Add(this.macTrackBar1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.button8);
@@ -289,6 +326,8 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.Button button8;
+        private XComponent.SliderBar.MACTrackBar macTrackBar1;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 
