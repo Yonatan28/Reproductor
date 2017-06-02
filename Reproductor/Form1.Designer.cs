@@ -48,14 +48,15 @@
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label2 = new System.Windows.Forms.Label();
             this.macTrackBar1 = new XComponent.SliderBar.MACTrackBar();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.caratula = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.Media)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.caratula)).BeginInit();
             this.SuspendLayout();
             // 
             // Media
@@ -66,6 +67,9 @@
             this.Media.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("Media.OcxState")));
             this.Media.Size = new System.Drawing.Size(17, 10);
             this.Media.TabIndex = 0;
+            this.Media.CdromMediaChange += new AxWMPLib._WMPOCXEvents_CdromMediaChangeEventHandler(this.Media_CdromMediaChange);
+            this.Media.PlaylistChange += new AxWMPLib._WMPOCXEvents_PlaylistChangeEventHandler(this.Media_PlaylistChange);
+            this.Media.MediaChange += new AxWMPLib._WMPOCXEvents_MediaChangeEventHandler(this.Media_MediaChange);
             // 
             // menuStrip1
             // 
@@ -74,7 +78,7 @@
             this.opcionesToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(832, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(723, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -145,7 +149,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(395, 338);
+            this.button2.Location = new System.Drawing.Point(555, 339);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(156, 24);
             this.button2.TabIndex = 3;
@@ -174,12 +178,13 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(269, 310);
+            this.button4.Location = new System.Drawing.Point(603, 310);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.Size = new System.Drawing.Size(108, 23);
             this.button4.TabIndex = 6;
-            this.button4.Text = "Aleatorio";
+            this.button4.Text = "Reproducir Todo";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button5
             // 
@@ -193,7 +198,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(269, 339);
+            this.button6.Location = new System.Drawing.Point(129, 368);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(75, 23);
             this.button6.TabIndex = 8;
@@ -211,24 +216,14 @@
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(492, 295);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(75, 23);
-            this.button8.TabIndex = 10;
-            this.button8.Text = "Actualizar";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
-            // 
             // dataGridView1
             // 
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(48, 237);
+            this.dataGridView1.Location = new System.Drawing.Point(12, 237);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView1.Size = new System.Drawing.Size(772, 52);
+            this.dataGridView1.Size = new System.Drawing.Size(706, 52);
             this.dataGridView1.TabIndex = 11;
             // 
             // label2
@@ -272,15 +267,24 @@
             this.timer1.Interval = 1;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // caratula
+            // 
+            this.caratula.Location = new System.Drawing.Point(48, 54);
+            this.caratula.Name = "caratula";
+            this.caratula.Size = new System.Drawing.Size(227, 177);
+            this.caratula.TabIndex = 13;
+            this.caratula.TabStop = false;
+            this.caratula.Click += new System.EventHandler(this.caratula_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(832, 437);
+            this.ClientSize = new System.Drawing.Size(723, 437);
+            this.Controls.Add(this.caratula);
             this.Controls.Add(this.macTrackBar1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.button8);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
@@ -299,6 +303,7 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.caratula)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -323,11 +328,11 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label2;
-        public System.Windows.Forms.Button button8;
         private XComponent.SliderBar.MACTrackBar macTrackBar1;
         private System.Windows.Forms.Timer timer1;
+        public System.Windows.Forms.DataGridView dataGridView1;
+        public System.Windows.Forms.PictureBox caratula;
     }
 }
 

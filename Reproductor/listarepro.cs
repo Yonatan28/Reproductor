@@ -18,6 +18,7 @@ namespace Reproductor
         Form1 frm = new Form1();
       
         List<reproducir> listareproduci = new List<reproducir>();
+        List<datosmp3> listadatosmp3 = new List<datosmp3>();
         public listarepro()
         {
 
@@ -118,13 +119,55 @@ namespace Reproductor
         {
             frm.Hide();
             frm.label1.Text = " ";
+
             frm.label1.Text = dataGridView1.CurrentRow.Cells["nombre"].Value.ToString();
             frm.Media.URL = dataGridView1.CurrentRow.Cells["url"].Value.ToString();
-            frm.button8.Enabled = true;
+
+            WMPLib.IWMPPlaylist playlist = frm.Media.playlistCollection.newPlaylist("myplaylist");
+            WMPLib.IWMPMedia media;
+
+            media = frm.Media.newMedia(dataGridView1.CurrentRow.Cells["url"].Value.ToString());
+            playlist.appendItem(media);
+
+            frm.Media.currentPlaylist = playlist;
+            listadatosmp3.RemoveRange(0,listadatosmp3.Count);
+            string dat = dataGridView1.CurrentRow.Cells["url"].Value.ToString();
+            cargarima(dat);
+            TagLib.File file = TagLib.File.Create(dat);
+            datosmp3 datmp = new datosmp3();
+            datmp.Titulo1 = file.Tag.Title;
+            datmp.Album1 = Convert.ToString(file.Tag.Year);
+            datmp.Genero = file.Tag.FirstGenre;
+            datmp.Num = file.Properties.Duration.ToString();
+            datmp.Artista1 = file.Tag.Album;
+            listadatosmp3.Add(datmp);
+            frm.dataGridView1.DataSource = null;
+            frm.dataGridView1.Refresh();
+            frm.dataGridView1.DataSource = listadatosmp3;
+           frm.dataGridView1.Refresh();
             frm.Show();
 
         }
+        public void cargarima(string dat)
+        {
+            TagLib.File file = TagLib.File.Create(dat);
+            System.Drawing.Image currentImage = null;
 
+            // In method onclick of the listbox showing all mp3's
+
+            if (file.Tag.Pictures.Length > 0)
+            {
+                TagLib.IPicture pic = file.Tag.Pictures[0];
+                MemoryStream ms = new MemoryStream(pic.Data.Data);
+                if (ms != null && ms.Length > 4096)
+                {
+                    currentImage = System.Drawing.Image.FromStream(ms);
+                    // Load thumbnail into PictureBox
+                    frm.caratula.Image = currentImage.GetThumbnailImage(100, 100, null, System.IntPtr.Zero);
+                }
+                ms.Close();
+            }
+        }
         private void button4_Click(object sender, EventArgs e)
         {
             int contar = listareproduci.Count();

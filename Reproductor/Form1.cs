@@ -41,19 +41,7 @@ namespace Reproductor
                 }
                
                 Media.Ctlcontrols.play();
-                string dat = openFileDialog1.FileName;
-                TagLib.File file = TagLib.File.Create(dat);
-                datosmp3 datmp = new datosmp3();
-                datmp.Titulo1 = file.Tag.Title;
-                datmp.Album1 = Convert.ToString(file.Tag.Year);
-                datmp.Genero = file.Tag.FirstGenre;
-                datmp.Num = file.Properties.Duration.ToString();
-                datmp.Artista1 = file.Tag.Album;
-                listadatosmp3.Add(datmp);
-                dataGridView1.DataSource = null;
-                dataGridView1.Refresh();
-                dataGridView1.DataSource = listadatosmp3;
-                dataGridView1.Refresh();
+                tag(openFileDialog1.FileName);
 
 
 
@@ -64,10 +52,43 @@ namespace Reproductor
                 Media.Ctlcontrols.play();
             }
         }
+        public void tag(string dato)
+        {
+            string dat = dato;
+            TagLib.File file = TagLib.File.Create(dat);
+            System.Drawing.Image currentImage = null;
 
+            // In method onclick of the listbox showing all mp3's
+        
+            if (file.Tag.Pictures.Length > 0)
+            {
+                TagLib.IPicture pic = file.Tag.Pictures[0];
+                MemoryStream ms = new MemoryStream(pic.Data.Data);
+                if (ms != null && ms.Length > 4096)
+                {
+                    currentImage = System.Drawing.Image.FromStream(ms);
+                    // Load thumbnail into PictureBox
+                    caratula.Image = currentImage.GetThumbnailImage(100, 100, null, System.IntPtr.Zero);
+                }
+                ms.Close();
+            }
+
+            datosmp3 datmp = new datosmp3();
+            datmp.Titulo1 = file.Tag.Title;
+            datmp.Album1 = Convert.ToString(file.Tag.Year);
+            datmp.Genero = file.Tag.FirstGenre;
+            datmp.Num = file.Properties.Duration.ToString();
+            datmp.Artista1 = file.Tag.Album;
+            listadatosmp3.Add(datmp);
+            dataGridView1.DataSource = null;
+            dataGridView1.Refresh();
+            dataGridView1.DataSource = listadatosmp3;
+            dataGridView1.Refresh();
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
             Media.uiMode = "invisible";
+           
             
         }
 
@@ -104,6 +125,7 @@ namespace Reproductor
 
         private void button5_Click(object sender, EventArgs e)
         {
+            listareproduci.RemoveRange(0, listareproduci.Count);
             actualizar();
             int max = listareproduci.Count;
             for (int i = 0; i < listareproduci.Count; i++)
@@ -125,11 +147,36 @@ namespace Reproductor
                 }
             }
             Media.Ctlcontrols.play();
+            listadatosmp3.RemoveRange(0,listadatosmp3.Count);
+            tag(Media.URL);
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
+            listareproduci.RemoveRange(0,listareproduci.Count);
+            actualizar();
+            int max = listareproduci.Count;
+            for (int i = 0; i < listareproduci.Count; i++)
+            {
+                if (label1.Text == listareproduci[i].Nombre)
+                {
+                    if (i == 0)
+                    {
+                        Media.URL = listareproduci[max-1].Url;
+                        label1.Text = listareproduci[max-1].Nombre;
+                        break;
+                    }
+                    else
+                    {
+                        Media.URL = listareproduci[i - 1].Url;
+                        label1.Text = listareproduci[i - 1].Nombre;
+                        break;
+                    }
 
+                }
+            }
+            listadatosmp3.RemoveRange(0, listadatosmp3.Count);
+            tag(Media.URL);
         }
         public void sigycargar()
         {
@@ -141,12 +188,7 @@ namespace Reproductor
             {
                 leerxml();
             }
-            else
-                dataGridView1.DataSource = null;
-            dataGridView1.Refresh();
-            dataGridView1.DataSource = listareproduci;
-            dataGridView1.Columns["url"].Visible = false;
-            dataGridView1.Refresh();
+          
         }
         private void button8_Click(object sender, EventArgs e)
         {
@@ -175,7 +217,53 @@ namespace Reproductor
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            listareproduci.RemoveRange(0, listareproduci.Count);
             macTrackBar1.Value = Media.settings.volume;
+            actualizar();
+            for (int i = 0; i < listareproduci.Count; i++)
+            {
+                if (Media.URL==listareproduci[i].Url)
+                {
+                    label1.Text = listareproduci[i].Nombre;
+                }
+            }
+           
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            listareproduci.RemoveRange(0, listareproduci.Count);
+            actualizar();
+            var myPlayList = Media.playlistCollection.newPlaylist("MyPlayList");
+     
+            for (int i = 0; i < listareproduci.Count; i++)
+            {
+                var mediaItem = Media.newMedia(listareproduci[i].Url);
+                myPlayList.appendItem(mediaItem);
+            }
+            Media.currentPlaylist = myPlayList;
+           
+        }
+
+        private void Media_MediaChange(object sender, AxWMPLib._WMPOCXEvents_MediaChangeEvent e)
+        {
+           
+         
+        }
+
+        private void Media_PlaylistChange(object sender, AxWMPLib._WMPOCXEvents_PlaylistChangeEvent e)
+        {
+           
+        }
+
+        private void Media_CdromMediaChange(object sender, AxWMPLib._WMPOCXEvents_CdromMediaChangeEvent e)
+        {
+          
+        }
+
+        private void caratula_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
