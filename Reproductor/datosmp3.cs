@@ -8,79 +8,15 @@ namespace Reproductor
 {
     class datosmp3
     {
-        string Titulo;
-        string Artista;
-       string Album;
-        string Año;
-       string Comentario;
+        string titulo;
+        string duracion;
+        string artista;
+       string album;
+        string año;
+       string comentario;
         string num;
         string genero;
-
-        public string Titulo1
-        {
-            get
-            {
-                return Titulo;
-            }
-
-            set
-            {
-                Titulo = value;
-            }
-        }
-
-        public string Artista1
-        {
-            get
-            {
-                return Artista;
-            }
-
-            set
-            {
-                Artista = value;
-            }
-        }
-
-        public string Album1
-        {
-            get
-            {
-                return Album;
-            }
-
-            set
-            {
-                Album = value;
-            }
-        }
-
-        public string Año1
-        {
-            get
-            {
-                return Año;
-            }
-
-            set
-            {
-                Año = value;
-            }
-        }
-
-        public string Comentario1
-        {
-            get
-            {
-                return Comentario;
-            }
-
-            set
-            {
-                Comentario = value;
-            }
-        }
-
+        List<string> Compositor;
         public string Num
         {
             get
@@ -93,7 +29,70 @@ namespace Reproductor
                 num = value;
             }
         }
+        public string Titulo
+        {
+            get
+            {
+                return titulo;
+            }
 
+            set
+            {
+                titulo = value;
+            }
+        }
+
+        public string Artista
+        {
+            get
+            {
+                return artista;
+            }
+
+            set
+            {
+                artista = value;
+            }
+        }
+
+        public string Album
+        {
+            get
+            {
+                return album;
+            }
+
+            set
+            {
+                album = value;
+            }
+        }
+
+        public string Año
+        {
+            get
+            {
+                return año;
+            }
+
+            set
+            {
+                año = value;
+            }
+        }
+
+        public string Comentario
+        {
+            get
+            {
+                return comentario;
+            }
+
+            set
+            {
+                comentario = value;
+            }
+        }
         public string Genero
         {
             get
@@ -104,6 +103,31 @@ namespace Reproductor
             set
             {
                 genero = value;
+            }
+        }
+        public string Duracion
+        {
+            get
+            {
+                return duracion;
+            }
+
+            set
+            {
+                duracion = value;
+            }
+        }
+
+        public List<string> Compositor1
+        {
+            get
+            {
+                return Compositor;
+            }
+
+            set
+            {
+                Compositor = value;
             }
         }
     }

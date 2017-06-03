@@ -23,6 +23,7 @@ namespace Reproductor
 
         List<reproducir> listareproduci = new List<reproducir>();
         List<datosmp3> listadatosmp3 = new List<datosmp3>();
+        List<Biblioteca> listabiblio = new List<Biblioteca>();
         public Form1()
         {
             InitializeComponent();
@@ -42,7 +43,7 @@ namespace Reproductor
                
                 Media.Ctlcontrols.play();
                 tag(openFileDialog1.FileName);
-
+                label1.Text = openFileDialog1.Title;
 
 
             }
@@ -68,17 +69,20 @@ namespace Reproductor
                 {
                     currentImage = System.Drawing.Image.FromStream(ms);
                     // Load thumbnail into PictureBox
-                    caratula.Image = currentImage.GetThumbnailImage(100, 100, null, System.IntPtr.Zero);
+                    caratula.Image = currentImage.GetThumbnailImage(200, 200, null, System.IntPtr.Zero);
                 }
                 ms.Close();
             }
 
             datosmp3 datmp = new datosmp3();
-            datmp.Titulo1 = file.Tag.Title;
-            datmp.Album1 = Convert.ToString(file.Tag.Year);
+            datmp.Titulo = file.Tag.Title;
+            datmp.Num = Convert.ToString(file.Tag.Track);
+            datmp.Album = file.Tag.Album;
+            datmp.Año = Convert.ToString(file.Tag.Year);
             datmp.Genero = file.Tag.FirstGenre;
-            datmp.Num = file.Properties.Duration.ToString();
-            datmp.Artista1 = file.Tag.Album;
+            datmp.Duracion = file.Properties.Duration.ToString();
+            datmp.Artista = file.Tag.FirstArtist;
+            datmp.Comentario = file.Tag.Comment;
             listadatosmp3.Add(datmp);
             dataGridView1.DataSource = null;
             dataGridView1.Refresh();
@@ -94,8 +98,16 @@ namespace Reproductor
 
         private void abrirToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            openFileDialog1.ShowDialog();
-            Media.URL = openFileDialog1.FileName;
+           
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    Media.URL = openFileDialog1.FileName;
+                }
+            listadatosmp3.RemoveRange(0,listadatosmp3.Count);
+                Media.Ctlcontrols.play();
+                tag(openFileDialog1.FileName);
+                label1.Text = openFileDialog1.Title;
+
         }
 
         private void salirToolStripMenuItem_Click(object sender, EventArgs e)
@@ -107,9 +119,10 @@ namespace Reproductor
         private void button2_Click(object sender, EventArgs e)
         {
             //this.Hide(); //cerrar formulario actual
+            Media.Ctlcontrols.stop();
             this.Hide();
             listarepro frm = new listarepro();
-
+            frm.Hide();
             frm.Show();
         }
 
@@ -125,29 +138,59 @@ namespace Reproductor
 
         private void button5_Click(object sender, EventArgs e)
         {
-            listareproduci.RemoveRange(0, listareproduci.Count);
-            actualizar();
-            int max = listareproduci.Count;
-            for (int i = 0; i < listareproduci.Count; i++)
+            if (listareproduci.Count==0)
             {
-                if (label1.Text==listareproduci[i].Nombre)
+                listabiblio.RemoveRange(0,listabiblio.Count);
+                actualizar2();
+                int max2 = listabiblio.Count;
+                for (int i = 0; i < listabiblio.Count; i++)
                 {
-                    if (i == max-1)
+                    if (label1.Text == listabiblio[i].Nombre)
                     {
-                        Media.URL = listareproduci[0].Url;
-                        label1.Text= listareproduci[0].Nombre;
-                        break;
+                        if (i == max2 - 1)
+                        {
+                            Media.URL = listabiblio[0].Url;
+                            label1.Text = listabiblio[0].Nombre;
+                            break;
+                        }
+                        else
+                        {
+                            Media.URL = listabiblio[i + 1].Url;
+                            label1.Text = listabiblio[i + 1].Nombre;
+                            break;
+                        }
+
                     }
-                    else {
-                        Media.URL = listareproduci[i + 1].Url;
-                        label1.Text = listareproduci[i+1].Nombre;
-                        break;
-                    }
-                       
                 }
             }
+            else
+            {
+                listareproduci.RemoveRange(0, listareproduci.Count);
+                actualizar();
+                int max = listareproduci.Count;
+                for (int i = 0; i < listareproduci.Count; i++)
+                {
+                    if (label1.Text == listareproduci[i].Nombre)
+                    {
+                        if (i == max - 1)
+                        {
+                            Media.URL = listareproduci[0].Url;
+                            label1.Text = listareproduci[0].Nombre;
+                            break;
+                        }
+                        else
+                        {
+                            Media.URL = listareproduci[i + 1].Url;
+                            label1.Text = listareproduci[i + 1].Nombre;
+                            break;
+                        }
+
+                    }
+                }
+               
+            }
             Media.Ctlcontrols.play();
-            listadatosmp3.RemoveRange(0,listadatosmp3.Count);
+            listadatosmp3.RemoveRange(0, listadatosmp3.Count);
             tag(Media.URL);
         }
 
@@ -182,6 +225,14 @@ namespace Reproductor
         {
             
         }
+        public void actualizar2()
+        {
+            if (listabiblio.Count == 0)
+            {
+                leerbiblio();
+            }
+
+        }
         public void actualizar()
         {
             if (listareproduci.Count==0)
@@ -195,9 +246,27 @@ namespace Reproductor
          
 
         }
-      public void leerxml()
+        public void leerbiblio()
         {
-            XDocument documento = XDocument.Load(@"C:\\Users\\Yonatan Coti\\Documents\\Visual Studio 2015\\Projects\\Reproductor\\Reproductor\\bin\\Debug\\miXML.xml");
+            XDocument documento = XDocument.Load(@"biblio.xml");
+            var listar = from lis in documento.Descendants("Blibioteca") select lis;
+            foreach (XElement u in listar.Elements("Cancion"))
+            {
+                Biblioteca tmp = new Biblioteca();
+                tmp.Nombre = u.Element("Titulo").Value;
+                tmp.Url = u.Element("Url").Value;
+                tmp.Num = u.Element("No").Value;
+                tmp.Album = u.Element("Album").Value;
+                tmp.Duracion = u.Element("Duracion").Value;
+                tmp.Calidad = u.Element("Calidad").Value;
+
+                listabiblio.Add(tmp);
+
+            }
+        }
+        public void leerxml()
+        {
+            XDocument documento = XDocument.Load(@"miXML.xml");
             var listar = from lis in documento.Descendants("Lista_Favoritos") select lis;
             foreach (XElement u in listar.Elements("Cancion"))
             {
@@ -217,16 +286,9 @@ namespace Reproductor
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            listareproduci.RemoveRange(0, listareproduci.Count);
+         
             macTrackBar1.Value = Media.settings.volume;
             actualizar();
-            for (int i = 0; i < listareproduci.Count; i++)
-            {
-                if (Media.URL==listareproduci[i].Url)
-                {
-                    label1.Text = listareproduci[i].Nombre;
-                }
-            }
            
         }
 
@@ -264,6 +326,61 @@ namespace Reproductor
         private void caratula_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void abrirListaFavoritosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+           
+        
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+          
+        }
+        public void eliminarlisre()
+        {
+             XmlDocument documento = new XmlDocument();
+             string ruta = @"miXML.xml";
+            //Cargamos el documento XML.
+            documento = new XmlDocument();
+            documento.Load(ruta);
+            //Obtenemos el nodo raiz del documento.
+            XmlElement bibliot = documento.DocumentElement;
+
+            //Obtenemos la lista de todos los empleados.
+            XmlNodeList listacancion = documento.SelectNodes("Lista_Favoritos/Cancion");
+
+            foreach (XmlNode item in listacancion)
+            {
+                for (int i = 0; i < listareproduci.Count; i++)
+                {
+                    //Determinamos el nodo a modificar por medio del id de empleado.
+                    if (item.FirstChild.InnerText == listareproduci[i].Nombre)
+                    {
+                        //Nodo sustituido.
+                        XmlNode nodoOld = item;
+                        bibliot.RemoveChild(nodoOld);
+                    }
+                }
+
+                //Salvamos el documento.
+                documento.Save(ruta);
+            }
+
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            eliminarlisre();
+            Application.ExitThread();
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+           
+            this.WindowState= FormWindowState.Minimized;
+         
         }
     }
 }
