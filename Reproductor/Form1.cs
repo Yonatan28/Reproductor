@@ -92,8 +92,8 @@ namespace Reproductor
         private void Form1_Load(object sender, EventArgs e)
         {
             Media.uiMode = "invisible";
-           
-            
+            listBox1.Visible = false;
+            caratula.Visible = true;
         }
 
         private void abrirToolStripMenuItem_Click(object sender, EventArgs e)
@@ -381,6 +381,35 @@ namespace Reproductor
            
             this.WindowState= FormWindowState.Minimized;
          
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            listBox1.Visible = true;
+            caratula.Visible = false;
+            this.listBox1.Items.Clear();
+            OpenFileDialog open = new OpenFileDialog();
+            open.Filter = "Archivo txt (*.txt)|*.txt|All(*,*)|*,*";
+            try
+            {
+                open.ShowDialog();
+                StreamReader import = new StreamReader(Convert.ToString(open.FileName));
+                while (import.Peek() >= 0)
+                {
+                    listBox1.Items.Add(Convert.ToString(import.ReadLine()));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(Convert.ToString(ex.Message));
+                return;
+            }
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            listBox1.Visible = false;
+            caratula.Visible = true;
         }
     }
 }

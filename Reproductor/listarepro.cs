@@ -150,6 +150,8 @@ namespace Reproductor
         {
             frm.Show();
             button6.Visible = false;
+            dataGridView1.Visible = true;
+            dataGridView2.Visible = false;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -288,20 +290,104 @@ namespace Reproductor
         {
             this.Hide();
         }
+        public void eliminarlisre()
+        {
+            XmlDocument documento = new XmlDocument();
+            string ruta = @"miXML.xml";
+            //Cargamos el documento XML.
+            documento = new XmlDocument();
+            documento.Load(ruta);
+            //Obtenemos el nodo raiz del documento.
+            XmlElement bibliot = documento.DocumentElement;
+
+            //Obtenemos la lista de todos los empleados.
+            XmlNodeList listacancion = documento.SelectNodes("Lista_Favoritos/Cancion");
+
+            foreach (XmlNode item in listacancion)
+            {
+                for (int i = 0; i < listareproduci.Count; i++)
+                {
+                    //Determinamos el nodo a modificar por medio del id de empleado.
+                    if (item.FirstChild.InnerText == listareproduci[i].Nombre)
+                    {
+                        //Nodo sustituido.
+                        XmlNode nodoOld = item;
+                        bibliot.RemoveChild(nodoOld);
+                    }
+                }
+
+                //Salvamos el documento.
+                documento.Save(ruta);
+            }
+
+        }
+        public void actualizar()
+        {
+            if (listareproduci.Count == 0)
+            {
+                leerxml();
+            }
+
+        }
+        public void leerxml()
+        {
+            XDocument documento = XDocument.Load(@"miXML.xml");
+            var listar = from lis in documento.Descendants("Lista_Favoritos") select lis;
+            foreach (XElement u in listar.Elements("Cancion"))
+            {
+                reproducir tmp = new reproducir();
+                tmp.Nombre = u.Element("Titulo").Value;
+                tmp.Url = u.Element("Url").Value;
+                listareproduci.Add(tmp);
+
+            }
+        }
+
+        private void dataGridView2_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            frm.Hide();
+            frm.label1.Text = " ";
+
+            frm.label1.Text = dataGridView2.CurrentRow.Cells["Nombre"].Value.ToString();
+            frm.Media.URL = dataGridView2.CurrentRow.Cells["Url"].Value.ToString();
+
+            WMPLib.IWMPPlaylist playlist = frm.Media.playlistCollection.newPlaylist("myplaylist");
+            WMPLib.IWMPMedia media;
+
+            media = frm.Media.newMedia(dataGridView2.CurrentRow.Cells["Url"].Value.ToString());
+            playlist.appendItem(media);
+
+            frm.Media.currentPlaylist = playlist;
+            listadatosmp3.RemoveRange(0,listadatosmp3.Count);
+            string dat = dataGridView2.CurrentRow.Cells["Url"].Value.ToString();
+            cargarima(dat);
+            tagcan(dat);
+            frm.dataGridView1.DataSource = null;
+            frm.dataGridView1.Refresh();
+            frm.dataGridView1.DataSource = listadatosmp3;
+           frm.dataGridView1.Refresh();
+            frm.Show();
+        }
 
         private void button3_Click_1(object sender, EventArgs e)
         {
+            dataGridView1.Visible = false;
+            dataGridView2.Visible = true;
+            listareproduci.RemoveRange(0, listareproduci.Count);
+            actualizar();
+            eliminarlisre();
             listabiblioteca.RemoveRange(0,listabiblioteca.Count);
             listareproduci.RemoveRange(0,listareproduci.Count);
+            
             button2.Visible = false;
             button1.Visible = false;
             button4.Visible = false;
             button6.Visible = true;
             leerbiblio();
-            dataGridView1.DataSource = null;
-            dataGridView1.Refresh();
-            dataGridView1.DataSource = listabiblioteca;
-            dataGridView1.Refresh();
+            dataGridView2.DataSource = null;
+            dataGridView2.Refresh();
+            dataGridView2.DataSource = listabiblioteca;
+            dataGridView2.Refresh();
         }
         public void leerbiblio()
         {
