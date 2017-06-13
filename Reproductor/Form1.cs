@@ -40,12 +40,9 @@ namespace Reproductor
                 {
                     Media.URL = openFileDialog1.FileName;
                 }
-               
                 Media.Ctlcontrols.play();
                 tag(openFileDialog1.FileName);
                 label1.Text = openFileDialog1.Title;
-
-
             }
 
         
@@ -410,6 +407,16 @@ namespace Reproductor
         {
             listBox1.Visible = false;
             caratula.Visible = true;
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button8_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

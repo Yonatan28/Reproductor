@@ -150,6 +150,7 @@ namespace Reproductor
         {
             frm.Show();
             button6.Visible = false;
+            button8.Visible = false;
             dataGridView1.Visible = true;
             dataGridView2.Visible = false;
         }
@@ -275,14 +276,22 @@ namespace Reproductor
 
         private void button6_Click(object sender, EventArgs e)
         {
-            listabiblioteca.RemoveRange(0,listabiblioteca.Count);
-            string nom=label1.Text;
-            ModificarDatosXml(nom);
+            string nomb = label1.Text;
+            for (int i = 0; i < listabiblioteca.Count; i++)
+            {
+                if (nomb == listabiblioteca[i].Nombre)
+                {
+                    listabiblioteca.RemoveAt(i);
+                }
+            }
+            
+            ModificarDatosXml(nomb);
+            listabiblioteca.RemoveRange(0, listabiblioteca.Count);
             leerbiblio();
-            dataGridView1.DataSource = null;
-            dataGridView1.Refresh();
-            dataGridView1.DataSource = listabiblioteca;
-            dataGridView1.Refresh();
+            dataGridView2.DataSource = null;
+            dataGridView2.Refresh();
+            dataGridView2.DataSource = listabiblioteca;
+            dataGridView2.Refresh();
 
         }
 
@@ -369,8 +378,57 @@ namespace Reproductor
             frm.Show();
         }
 
+        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            string nom = dataGridView2.CurrentRow.Cells["Nombre"].Value.ToString();
+            label1.Text = nom;
+        }
+        string urla;
+        private void button8_Click(object sender, EventArgs e)
+        {
+           
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                 urla = openFileDialog1.FileName;
+            }
+            listadatosmp3.RemoveRange(0, listadatosmp3.Count);
+
+          
+
+                Biblioteca blitmp = new Biblioteca();
+            TagLib.File file = TagLib.File.Create(urla);
+            blitmp.Url = urla;
+                    blitmp.Nombre = file.Tag.Title;
+                    blitmp.Titulo = file.Tag.Title;
+            label1.Text= file.Tag.Title;
+            blitmp.Año = Convert.ToString(file.Tag.Year);
+                    blitmp.Duracion = file.Properties.Duration.ToString();
+                    blitmp.Num = Convert.ToString(file.Tag.Track);
+                    blitmp.Album = file.Tag.Album;
+                    blitmp.Calidad = Convert.ToString(file.Properties.AudioBitrate);
+
+                listabiblioteca.Add(blitmp);
+            
+            string archivo = @"biblio.xml";
+            if (File.Exists(archivo) == true)
+            {
+                InsertarXml();
+            }
+            else { EscribirXml(); }
+            listabiblioteca.RemoveRange(0, listabiblioteca.Count);
+            leerbiblio();
+            dataGridView2.DataSource = null;
+            dataGridView2.Refresh();
+            dataGridView2.DataSource = listabiblioteca;
+            dataGridView2.Columns["Url"].Visible = false;
+            dataGridView2.Refresh();
+
+        }
+
         private void button3_Click_1(object sender, EventArgs e)
         {
+            button8.Visible = true;
+            button5.Visible = false;
             dataGridView1.Visible = false;
             dataGridView2.Visible = true;
             listareproduci.RemoveRange(0, listareproduci.Count);

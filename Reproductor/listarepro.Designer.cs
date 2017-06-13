@@ -39,6 +39,7 @@
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.button8 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
@@ -98,7 +99,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(243, 314);
+            this.button3.Location = new System.Drawing.Point(252, 311);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(93, 25);
             this.button3.TabIndex = 9;
@@ -108,7 +109,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(342, 314);
+            this.button5.Location = new System.Drawing.Point(351, 312);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(117, 25);
             this.button5.TabIndex = 10;
@@ -139,11 +140,22 @@
             // dataGridView2
             // 
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(93, 13);
+            this.dataGridView2.Location = new System.Drawing.Point(93, 12);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.Size = new System.Drawing.Size(385, 281);
             this.dataGridView2.TabIndex = 13;
+            this.dataGridView2.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellContentClick);
             this.dataGridView2.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellDoubleClick);
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(351, 311);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(106, 23);
+            this.button8.TabIndex = 14;
+            this.button8.Text = "Agregar Canciones";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // listarepro
             // 
@@ -151,6 +163,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(480, 346);
             this.ControlBox = false;
+            this.Controls.Add(this.button8);
             this.Controls.Add(this.dataGridView2);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
@@ -185,5 +198,6 @@
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.Button button8;
     }
 }

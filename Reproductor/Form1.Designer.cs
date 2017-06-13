@@ -67,10 +67,10 @@
             // Media
             // 
             this.Media.Enabled = true;
-            this.Media.Location = new System.Drawing.Point(550, 27);
+            this.Media.Location = new System.Drawing.Point(557, 27);
             this.Media.Name = "Media";
             this.Media.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("Media.OcxState")));
-            this.Media.Size = new System.Drawing.Size(17, 10);
+            this.Media.Size = new System.Drawing.Size(10, 10);
             this.Media.TabIndex = 0;
             this.Media.CdromMediaChange += new AxWMPLib._WMPOCXEvents_CdromMediaChangeEventHandler(this.Media_CdromMediaChange);
             this.Media.PlaylistChange += new AxWMPLib._WMPOCXEvents_PlaylistChangeEventHandler(this.Media_PlaylistChange);
@@ -282,10 +282,11 @@
             this.button8.TabIndex = 14;
             this.button8.Text = "Agregar a Favoritos";
             this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click_1);
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(536, 27);
+            this.button9.Location = new System.Drawing.Point(530, 27);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(68, 23);
             this.button9.TabIndex = 15;
@@ -295,7 +296,7 @@
             // 
             // button11
             // 
-            this.button11.Location = new System.Drawing.Point(620, 28);
+            this.button11.Location = new System.Drawing.Point(617, 27);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(55, 23);
             this.button11.TabIndex = 17;
@@ -320,6 +321,7 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(227, 186);
             this.listBox1.TabIndex = 19;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // button12
             // 
